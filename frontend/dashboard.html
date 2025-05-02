@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor-Saab Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>Doctor-Saab</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active"><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="#symptom-checker"><i class="fas fa-stethoscope"></i> Symptom Checker</a></li>
+          <li><a href="#first-aid"><i class="fas fa-medkit"></i> First Aid</a></li>
+          <li><a href="#consult"><i class="fas fa-video"></i> Consult a Doctor</a></li>
+          <li><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <div class="user-info">
+          <div class="notifications">
+            <i class="fas fa-bell"></i>
+            <span class="badge">3</span>
+          </div>
+          <div class="user">
+            <img src="https://placehold.co/40x40" alt="User" class="avatar">
+            <span id="userName">User Name</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
+        <!-- Home Section -->
+        <section id="home" class="dashboard-section active">
+          <h2>Welcome to Your Health Dashboard</h2>
+          <div class="stats-container">
+            <div class="stat-card">
+              <i class="fas fa-heartbeat"></i>
+              <div class="stat-info">
+                <h3>Health Status</h3>
+                <p>Good</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-calendar-check"></i>
+              <div class="stat-info">
+                <h3>Upcoming</h3>
+                <p>No appointments</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-history"></i>
+              <div class="stat-info">
+                <h3>Recent</h3>
+                <p>Symptom check on May 1</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+              <button class="action-btn" data-section="symptom-checker">
+                <i class="fas fa-stethoscope"></i>
+                <span>Check Symptoms</span>
+              </button>
+              <button class="action-btn" data-section="first-aid">
+                <i class="fas fa-medkit"></i>
+                <span>First Aid Guide</span>
+              </button>
+              <button class="action-btn" data-section="consult">
+                <i class="fas fa-video"></i>
+                <span>Talk to Doctor</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="health-tips">
+            <h3>Health Tips</h3>
+            <div class="tips-carousel">
+              <div class="tip-card">
+                <h4>Stay Hydrated</h4>
+                <p>Drink at least 8 glasses of water daily to maintain good health.</p>
+              </div>
+              <div class="tip-card">
+                <h4>Regular Exercise</h4>
+                <p>30 minutes of moderate exercise daily can significantly improve your health.</p>
+              </div>
+              <div class="tip-card">
+                <h4>Balanced Diet</h4>
+                <p>Include fruits, vegetables, and whole grains in your daily meals.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Symptom Checker Section -->
+        <section id="symptom-checker" class="dashboard-section">
+          <h2>Symptom Checker</h2>
+          <p class="section-desc">Describe your symptoms below and we'll help identify possible conditions.</p>
+          
+          <form id="symptomForm" class="symptom-form">
+            <div class="form-group">
+              <label for="symptoms">What symptoms are you experiencing?</label>
+              <textarea id="symptoms" placeholder="e.g., fever, cough, headache, etc." required></textarea>
+            </div>
+            <div class="form-group">
+              <label>How long have you been experiencing these symptoms?</label>
+              <div class="radio-group">
+                <label><input type="radio" name="duration" value="1"> Less than a day</label>
+                <label><input type="radio" name="duration" value="2"> 1-3 days</label>
+                <label><input type="radio" name="duration" value="3"> 4-7 days</label>
+                <label><input type="radio" name="duration" value="4"> More than a week</label>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary">Analyze Symptoms</button>
+          </form>
+          
+          <div id="result" class="result-container">
+            <!-- Results will appear here -->
+          </div>
+        </section>
+
+        <!-- First Aid Section -->
+        <section id="first-aid" class="dashboard-section">
+          <h2>First Aid Guide</h2>
+          <p class="section-desc">Search for first aid procedures or browse common emergencies below.</p>
+          
+          <div class="search-container">
+            <input type="text" id="firstAidSearch" placeholder="Search first aid procedures...">
+            <button><i class="fas fa-search"></i></button>
+          </div>
+          
+          <div class="common-conditions">
+            <h3>Common Emergency Conditions</h3>
+            <div class="conditions-grid">
+              <div class="condition-card" data-condition="burns">
+                <i class="fas fa-fire"></i>
+                <h4>Burns</h4>
+              </div>
+              <div class="condition-card" data-condition="cuts">
+                <i class="fas fa-cut"></i>
+                <h4>Cuts & Wounds</h4>
+              </div>
+              <div class="condition-card" data-condition="choking">
+                <i class="fas fa-lungs"></i>
+                <h4>Choking</h4>
+              </div>
+              <div class="condition-card" data-condition="heart-attack">
+                <i class="fas fa-heartbeat"></i>
+                <h4>Heart Attack</h4>
+              </div>
+              <div class="condition-card" data-condition="fracture">
+                <i class="fas fa-bone"></i>
+                <h4>Fractures</h4>
+              </div>
+              <div class="condition-card" data-condition="poisoning">
+                <i class="fas fa-skull-crossbones"></i>
+                <h4>Poisoning</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div id="firstAidContent" class="first-aid-content">
+            <!-- First aid content will appear here -->
+          </div>
+        </section>
+
+        <!-- Consult Section -->
+        <section id="consult" class="dashboard-section">
+          <h2>Consult a Doctor</h2>
+          <p class="section-desc">Connect with healthcare professionals via secure video consultation.</p>
+          
+          <div class="doctor-categories">
+            <div class="category-tabs">
+              <button class="tab-btn active" data-category="general">General Physician</button>
+              <button class="tab-btn" data-category="cardio">Cardiologist</button>
+              <button class="tab-btn" data-category="derma">Dermatologist</button>
+              <button class="tab-btn" data-category="pedia">Pediatrician</button>
+              <button class="tab-btn" data-category="psych">Psychiatrist</button>
+            </div>
+            
+            <div class="doctors-list">
+              <div class="doctor-card">
+                <img src="https://placehold.co/100x100" alt="Doctor" class="doctor-img">
+                <div class="doctor-info">
+                  <h4>Dr. Sarah Johnson</h4>
+                  <p class="speciality">General Physician</p>
+                  <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>4.5 (120 reviews)</span>
+                  </div>
+                  <p class="availability">Available: Today, 2:00 PM - 6:00 PM</p>
+                </div>
+                <button class="btn-primary consult-btn">Book Consultation</button>
+              </div>
+              
+              <div class="doctor-card">
+                <img src="https://placehold.co/100x100" alt="Doctor" class="doctor-img">
+                <div class="doctor-info">
+                  <h4>Dr. Michael Chen</h4>
+                  <p class="speciality">General Physician</p>
+                  <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <span>4.0 (98 reviews)</span>
+                  </div>
+                  <p class="availability">Available: Tomorrow, 9:00 AM - 1:00 PM</p>
+                </div>
+                <button class="btn-primary consult-btn">Book Consultation</button>
+              </div>
+              
+              <div class="doctor-card">
+                <img src="https://placehold.co/100x100" alt="Doctor" class="doctor-img">
+                <div class="doctor-info">
+                  <h4>Dr. Lisa Patel</h4>
+                  <p class="speciality">General Physician</p>
+                  <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>5.0 (145 reviews)</span>
+                  </div>
+                  <p class="availability">Available: Today, 7:00 PM - 9:00 PM</p>
+                </div>
+                <button class="btn-primary consult-btn">Book Consultation</button>
+              </div>
+            </div>
+          </div>
+          
+          <div id="consultRoom" class="consult-room">
+            <!-- Video consultation interface will appear here -->
+          </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="dashboard-section">
+          <h2>Your Profile</h2>
+          
+          <div class="profile-container">
+            <div class="profile-header">
+              <div class="profile-avatar">
+                <img src="https://placehold.co/120x120" alt="Profile">
+                <button class="edit-avatar"><i class="fas fa-camera"></i></button>
+              </div>
+              <div class="profile-info">
+                <h3 id="profileName">John Doe</h3>
+                <p id="profileEmail">johndoe@example.com</p>
+              </div>
+            </div>
+            
+            <div class="profile-details">
+              <form id="profileForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" value="John Doe">
+                  </div>
+                  <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" id="dateOfBirth">
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <textarea id="address"></textarea>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="emergencyContact">Emergency Contact</label>
+                    <input type="text" id="emergencyContact">
+                  </div>
+                  <div class="form-group">
+                    <label for="emergencyPhone">Emergency Phone</label>
+                    <input type="tel" id="emergencyPhone">
+                  </div>
+                </div>
+                
+                <h3>Medical Information</h3>
+                
+                <div class="form-group">
+                  <label for="allergies">Allergies (if any)</label>
+                  <textarea id="allergies"></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="medications">Current Medications</label>
+                  <textarea id="medications"></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="conditions">Existing Medical Conditions</label>
+                  <textarea id="conditions"></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Save Changes</button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./symptom-check.js"></script>
+  <script type="module" src="./dashboard.js"></script>
+</body>
+</html>
