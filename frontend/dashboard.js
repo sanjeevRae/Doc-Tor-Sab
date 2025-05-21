@@ -2,16 +2,7 @@
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import API from './api-service.js';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA35mvixmpvziRmtHY5g14u-RWDgK0FUFw",
-  authDomain: "doc-tor-sab.firebaseapp.com",
-  projectId: "doc-tor-sab",
-  storageBucket: "doc-tor-sab.firebasestorage.app",
-  messagingSenderId: "740063020505",
-  appId: "1:740063020505:web:bd949c8abbf3b52c2905c8",
-  measurementId: "G-S1PTGJQETL"
-};
+import { firebaseConfig } from './firebase-config.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -28,6 +19,10 @@ const categoryTabs = document.querySelectorAll('.category-tabs .tab-btn');
 // Set user information
 function setUserInfo() {
   const user = auth.currentUser;
+  // Try to get additional user data from session storage
+  const userDataString = sessionStorage.getItem('currentUser');
+  const userData = userDataString ? JSON.parse(userDataString) : null;
+  
   if (user) {
     // Set user name in the header and profile
     document.getElementById('userName').textContent = user.displayName || 'User';
@@ -37,6 +32,37 @@ function setUserInfo() {
     // Set profile form values if available
     if (user.displayName) {
       document.getElementById('fullName').value = user.displayName;
+    }
+    
+    // If we have additional user data from Firestore
+    if (userData) {
+      console.log("Loaded user data from session storage:", userData);
+      
+      // Display role-specific UI
+      if (userData.userRole === 'doctor') {
+        document.body.classList.add('doctor-dashboard');
+        // Show doctor-specific elements
+        const doctorElements = document.querySelectorAll('.doctor-only');
+        doctorElements.forEach(el => el.style.display = 'block');
+        
+        // Hide patient-specific elements
+        const patientElements = document.querySelectorAll('.patient-only');
+        patientElements.forEach(el => el.style.display = 'none');
+        
+        // Set doctor-specific data
+        if (userData.specialization) {
+          document.getElementById('specialization').textContent = userData.specialization;
+        }
+      } else {
+        document.body.classList.add('patient-dashboard');
+        // Show patient-specific elements
+        const patientElements = document.querySelectorAll('.patient-only');
+        patientElements.forEach(el => el.style.display = 'block');
+        
+        // Hide doctor-specific elements
+        const doctorElements = document.querySelectorAll('.doctor-only');
+        doctorElements.forEach(el => el.style.display = 'none');
+      }
     }
   } else {
     // Redirect to login if not logged in
@@ -371,6 +397,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // Check the hash in the URL to activate the corresponding section
   let sectionId = window.location.hash.substring(1) || 'home';
   activateSection(sectionId);
+
+  // Initialize custom cursor
+  initCustomCursor();
+  
+  // Set current date
+  updateCurrentDate();
+
+  // Initialize navigation
+  initNavigation();
+  
+  // Load initial data for dashboard
+  loadDashboardData();
+  
+  // Initialize symptom checker 
+  initSymptomChecker();
+  
+  // Initialize first aid section
+  initFirstAidSection();
+  
+  // Initialize doctor consultation tabs
+  initConsultationTabs();
 });
 
 // Dashboard JavaScript
@@ -1304,4 +1351,97 @@ function getFirstAidContent(condition) {
       'Always seek professional medical help in case of emergency.'
     ]
   };
+}
+
+// Initialize custom cursor for dashboard
+function initCustomCursor() {
+  // Check if we're on a touch device, if so, don't show custom cursor
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    return;
+  }
+  
+  // Check if cursor elements exist in the DOM
+  const cursor = document.querySelector('.cursor');
+  const cursorFollower = document.querySelector('.cursor-follower');
+  
+  // If cursor elements don't exist, create them
+  if (!cursor) {
+    const newCursor = document.createElement('div');
+    newCursor.className = 'cursor';
+    document.body.appendChild(newCursor);
+  }
+  
+  if (!cursorFollower) {
+    const newCursorFollower = document.createElement('div');
+    newCursorFollower.className = 'cursor-follower';
+    document.body.appendChild(newCursorFollower);
+  }
+  
+  // Get the cursor elements (now guaranteed to exist)
+  const cursorElement = document.querySelector('.cursor');
+  const cursorFollowerElement = document.querySelector('.cursor-follower');
+  
+  // Hide default cursor on the entire document
+  document.body.style.cursor = 'none';
+  
+  // Main cursor movement
+  document.addEventListener('mousemove', function(e) {
+    cursorElement.style.left = e.clientX + 'px';
+    cursorElement.style.top = e.clientY + 'px';
+    
+    setTimeout(function() {
+      cursorFollowerElement.style.left = e.clientX + 'px';
+      cursorFollowerElement.style.top = e.clientY + 'px';
+    }, 80);
+  });
+  
+  // Add hover effects for interactive elements
+  const hoverElements = document.querySelectorAll('a, button, .btn-primary, .btn-secondary, .action-btn, .condition-card, .stat-card, .tip-card, input, select, textarea');
+  
+  hoverElements.forEach(element => {
+    element.addEventListener('mouseenter', function() {
+      cursorElement.classList.add('cursor-active');
+      cursorFollowerElement.classList.add('cursor-active');
+      element.style.cursor = 'none'; // Ensure default cursor doesn't show
+    });
+    
+    element.addEventListener('mouseleave', function() {
+      cursorElement.classList.remove('cursor-active');
+      cursorFollowerElement.classList.remove('cursor-active');
+    });
+  });
+  
+  // Handle cursor disappearing when leaving window
+  document.addEventListener('mouseout', function(e) {
+    if (e.relatedTarget === null) {
+      cursorElement.style.display = 'none';
+      cursorFollowerElement.style.display = 'none';
+    }
+  });
+  
+  document.addEventListener('mouseover', function() {
+    cursorElement.style.display = 'block';
+    cursorFollowerElement.style.display = 'block';
+  });
+  
+  // Handle cursor disappearing during click
+  document.addEventListener('mousedown', function() {
+    cursorElement.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    cursorFollowerElement.style.transform = 'translate(-50%, -50%) scale(0.8)';
+  });
+  
+  document.addEventListener('mouseup', function() {
+    cursorElement.style.transform = 'translate(-50%, -50%) scale(1)';
+    cursorFollowerElement.style.transform = 'translate(-50%, -50%) scale(1)';
+  });
+}
+
+// Update current date in the dashboard
+function updateCurrentDate() {
+  const dateElement = document.getElementById('currentDate');
+  if (dateElement) {
+    const now = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    dateElement.textContent = now.toLocaleDateString('en-US', options);
+  }
 }

@@ -7,8 +7,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
   <div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -52,63 +57,136 @@
       <div class="dashboard-content">
         <!-- Home Section -->
         <section id="home" class="dashboard-section active">
-          <h2>Welcome to Your Health Dashboard</h2>
+          <div class="welcome-header">
+            <div class="welcome-text">
+              <h2>Welcome to Your Health Dashboard</h2>
+              <p class="section-desc">Monitor your health metrics, check symptoms, and connect with healthcare professionals all in one place.</p>
+            </div>
+            <div class="welcome-date">
+              <div class="date-display">
+                <span id="currentDate">May 5, 2025</span>
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+          </div>
+          
           <div class="stats-container">
             <div class="stat-card">
-              <i class="fas fa-heartbeat"></i>
+              <div class="stat-icon pulse">
+                <i class="fas fa-heartbeat"></i>
+              </div>
               <div class="stat-info">
                 <h3>Health Status</h3>
                 <p>Good</p>
+                <div class="stat-progress">
+                  <div class="progress-bar" style="width: 85%"></div>
+                </div>
               </div>
             </div>
             <div class="stat-card">
-              <i class="fas fa-calendar-check"></i>
+              <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
               <div class="stat-info">
-                <h3>Upcoming</h3>
+                <h3>Upcoming Appointment</h3>
                 <p>No appointments</p>
+                <a href="#consult" class="stat-action">Schedule Now</a>
               </div>
             </div>
             <div class="stat-card">
-              <i class="fas fa-history"></i>
+              <div class="stat-icon">
+                <i class="fas fa-history"></i>
+              </div>
               <div class="stat-info">
-                <h3>Recent</h3>
+                <h3>Recent Activity</h3>
                 <p>Symptom check on May 1</p>
+                <span class="stat-date">3 days ago</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-pills"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Medication</h3>
+                <p>No active prescriptions</p>
+                <span class="stat-badge">All Clear</span>
               </div>
             </div>
           </div>
 
-          <div class="quick-actions">
-            <h3>Quick Actions</h3>
-            <div class="action-buttons">
-              <button class="action-btn" data-section="symptom-checker">
-                <i class="fas fa-stethoscope"></i>
-                <span>Check Symptoms</span>
-              </button>
-              <button class="action-btn" data-section="first-aid">
-                <i class="fas fa-medkit"></i>
-                <span>First Aid Guide</span>
-              </button>
-              <button class="action-btn" data-section="consult">
-                <i class="fas fa-video"></i>
-                <span>Talk to Doctor</span>
-              </button>
+          <div class="dashboard-row">
+            <div class="dashboard-col">
+              <div class="quick-actions">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <div class="action-buttons">
+                  <button class="action-btn" data-section="symptom-checker">
+                    <div class="action-icon">
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <span>Symptom Checker</span>
+                    <span class="btn-description">Analyze your symptoms</span>
+                  </button>
+                  <button class="action-btn" data-section="first-aid">
+                    <div class="action-icon">
+                      <i class="fas fa-medkit"></i>
+                    </div>
+                    <span>First Aid Guide</span>
+                    <span class="btn-description">Emergency instructions</span>
+                  </button>
+                  <button class="action-btn" data-section="consult">
+                    <div class="action-icon">
+                      <i class="fas fa-video"></i>
+                    </div>
+                    <span>Consultation</span>
+                    <span class="btn-description">Talk to a doctor</span>
+                  </button>
+                  <button class="action-btn" data-section="profile">
+                    <div class="action-icon">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <span>Profile</span>
+                    <span class="btn-description">Manage your details</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div class="health-tips">
-            <h3>Health Tips</h3>
-            <div class="tips-carousel">
-              <div class="tip-card">
-                <h4>Stay Hydrated</h4>
-                <p>Drink at least 8 glasses of water daily to maintain good health.</p>
-              </div>
-              <div class="tip-card">
-                <h4>Regular Exercise</h4>
-                <p>30 minutes of moderate exercise daily can significantly improve your health.</p>
-              </div>
-              <div class="tip-card">
-                <h4>Balanced Diet</h4>
-                <p>Include fruits, vegetables, and whole grains in your daily meals.</p>
+            
+            <div class="dashboard-col">
+              <div class="health-tips">
+                <div class="tips-header">
+                  <h3><i class="fas fa-lightbulb"></i> Health Tips</h3>
+                  <button class="refresh-btn"><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <div class="tip-cards">
+                  <div class="tip-card">
+                    <div class="tip-icon">
+                      <i class="fas fa-glass-water"></i>
+                    </div>
+                    <div class="tip-content">
+                      <h4>Stay Hydrated</h4>
+                      <p>Drink at least 8 glasses of water daily to maintain optimal health.</p>
+                    </div>
+                  </div>
+                  <div class="tip-card">
+                    <div class="tip-icon">
+                      <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="tip-content">
+                      <h4>Quality Sleep</h4>
+                      <p>Aim for 7-9 hours of sleep each night for better health and productivity.</p>
+                    </div>
+                  </div>
+                  <div class="tip-card">
+                    <div class="tip-icon">
+                      <i class="fas fa-apple-whole"></i>
+                    </div>
+                    <div class="tip-content">
+                      <h4>Balanced Diet</h4>
+                      <p>Include fruits and vegetables in every meal for essential nutrients.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -350,5 +428,6 @@
 
   <script type="module" src="./symptom-check.js"></script>
   <script type="module" src="./dashboard.js"></script>
+  <script src="cursor.js"></script>
 </body>
 </html>

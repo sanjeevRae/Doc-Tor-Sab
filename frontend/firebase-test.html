@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Auth Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Auth Test</h1>
+    
+    <div>
+        <button id="testAuth">Test Firebase Auth</button>
+        <button id="testFirestore">Test Firestore</button>
+    </div>
+    
+    <div id="status"></div>
+    
+    <script type="module">
+        import { auth, db } from "./firebase-auth.js";
+        
+        const statusEl = document.getElementById('status');
+        
+        document.getElementById('testAuth').addEventListener('click', async () => {
+            try {
+                statusEl.textContent = "Testing Firebase Auth connection...";
+                statusEl.className = "";
+                
+                // Just check if auth is initialized
+                if (auth) {
+                    statusEl.textContent = "Firebase Auth is successfully initialized!";
+                    statusEl.className = "success";
+                } else {
+                    statusEl.textContent = "Firebase Auth initialization failed";
+                    statusEl.className = "error";
+                }
+            } catch (error) {
+                statusEl.textContent = `Error: ${error.message}`;
+                statusEl.className = "error";
+                console.error(error);
+            }
+        });
+        
+        document.getElementById('testFirestore').addEventListener('click', async () => {
+            try {
+                statusEl.textContent = "Testing Firestore connection...";
+                statusEl.className = "";
+                
+                if (db) {
+                    // Try a simple Firestore operation
+                    const testCollection = collection(db, "test");
+                    const timestamp = new Date().toString();
+                    await addDoc(testCollection, {
+                        test: true,
+                        timestamp: timestamp
+                    });
+                    
+                    statusEl.textContent = `Firestore is working! Test document added at ${timestamp}`;
+                    statusEl.className = "success";
+                } else {
+                    statusEl.textContent = "Firestore initialization failed";
+                    statusEl.className = "error";
+                }
+            } catch (error) {
+                statusEl.textContent = `Error: ${error.message}`;
+                statusEl.className = "error";
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

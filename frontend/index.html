@@ -3,303 +3,670 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor-Sab - Your Personal Health Assistant</title>
+    <title>DoctorSab - Virtual Healthcare Assistant</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Doctor-Saab is your personal health assistant offering symptom checking, first aid guides, and video consultations with healthcare professionals.">
+    <!-- EmailJS Script - Moved higher in the page -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <h1>Doctor-Saab</h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><button id="loginBtn" class="btn-primary">Login</button></li>
-            </ul>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1>Doctor<span>Sab</span></h1>
+                </div>
+                <div class="menu">
+                    <ul class="nav-list">
+                        <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+                        <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                        <li class="nav-item"><a href="#about" class="nav-link">About Us</a></li>
+                        <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                    </ul>
+                    <div class="cta">
+                        <button class="btn btn-login" id="loginBtn">Login</button>
+                        <button class="btn btn-signup" id="signupBtn">Sign Up <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <button class="menu-toggle" id="menuToggle">
+                    <span class="menu-icon"></span>
+                </button>
+            </nav>
+        </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Your Personal <span class="text-primary">Health Assistant</span></h1>
-            <p>Get quick health advice, first aid instructions, and connect with medical professionals for personalized consultations through secure video calls.</p>
-            <div class="hero-buttons">
-                <button id="getStartedBtn" class="btn-primary"><i class="fas fa-stethoscope"></i> Get Started</button>
-                <button class="btn-secondary"><i class="fas fa-info-circle"></i> Learn More</button>
-            </div>
+    <section class="hero" id="home">
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
         </div>
-        <div class="hero-image">
-            <div class="floating-icon icon-1">
-                <i class="fas fa-heartbeat"></i>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <span><i class="fas fa-shield-alt"></i> Trusted by 100,000+ Users</span>
+                    </div>
+                    <h1 class="reveal-text">Your Health Assistant, <span class="highlight">Anytime, Anywhere</span></h1>
+                    <p>Get instant medical assistance, symptom checks, and first aid guidance at your fingertips. Connect with qualified doctors from the comfort of your home.</p>
+                    <div class="hero-cta">
+                        <button class="btn btn-primary" id="getStartedBtn">Get Started <i class="fas fa-arrow-right"></i></button>
+                        <button class="btn btn-secondary" id="learnMoreBtn"><i class="fas fa-play-circle"></i> Watch Demo</button>
+                    </div>
+                    <div class="hero-features">
+                        <div class="feature-tag">
+                            <i class="fas fa-check-circle"></i>
+                            <span>No Appointment Needed</span>
+                        </div>
+                        <div class="feature-tag">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Secure & Private</span>
+                        </div>
+                        <div class="feature-tag">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Expert Doctors</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1665080954352-5a12ef53017a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Doctor" class="main-image">
+                        <div class="floating-element pulse-element">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="floating-element badge-element">
+                            <span class="badge-text">24/7 Support</span>
+                        </div>
+                        <div class="floating-element rating-element">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span>4.9/5</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="floating-icon icon-2">
-                <i class="fas fa-stethoscope"></i>
+
+           
+            <div class="trusted-by scroll-reveal">
+                
+                <div class="partner-logos">
+             </div>
+             <div class="empty"></div>
             </div>
-            <div class="floating-icon icon-3">
-                <i class="fas fa-user-md"></i>
-            </div>
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Doctor-Saab illustration">
         </div>
     </section>
 
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
-            <h2>Our Services</h2>
-            <p class="section-desc">Doctor-Saab provides comprehensive health services to help you manage your well-being effectively.</p>
+            <div class="section-header">
+                <span class="section-tag">Our Features</span>
+                <h2>How DoctorSab Can Help You</h2>
+                <p>Discover the range of services designed to provide you with comprehensive healthcare support</p>
+            </div>
+
             <div class="feature-cards">
-                <div class="card fade-in-up">
-                    <i class="fas fa-stethoscope"></i>
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
                     <h3>Symptom Checker</h3>
-                    <p>Describe your symptoms and get preliminary insights about potential health issues using our AI-powered system.</p>
-                    <a href="#" class="btn-secondary">Check Symptoms</a>
+                    <p>Get quick assessment of your symptoms and understand potential causes and treatments with our AI-powered analysis.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    <div class="feature-badge">Popular</div>
                 </div>
-                <div class="card fade-in-up">
-                    <i class="fas fa-medkit"></i>
+
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-kit-medical"></i>
+                    </div>
                     <h3>First Aid Guide</h3>
-                    <p>Access step-by-step first aid instructions for common emergencies, available instantly when you need them most.</p>
-                    <a href="#" class="btn-secondary">First Aid Help</a>
+                    <p>Access detailed step-by-step first aid instructions for emergencies and common injuries with visual guides.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="card fade-in-up">
-                    <i class="fas fa-video"></i>
-                    <h3>Expert Consultation</h3>
-                    <p>Connect with qualified healthcare professionals through secure, high-quality video consultations from anywhere.</p>
-                    <a href="#" class="btn-secondary">Connect Now</a>
+
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-user-doctor"></i>
+                    </div>
+                    <h3>Doctor Consultation</h3>
+                    <p>Connect with qualified healthcare professionals through secure video calls and get personalized medical advice.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    <div class="feature-badge">New</div>
                 </div>
+
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-notes-medical"></i>
+                    </div>
+                    <h3>Health Records</h3>
+                    <p>Store and manage your medical history, prescriptions, and reports in one secure and easily accessible place.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="feature-cta">
+                <div class="feature-cta-text">
+                    <h3>Need immediate help?</h3>
+                    <p>Our AI symptom checker is available 24/7</p>
+                </div>
+                <button class="btn btn-primary">Start Assessment <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- About Us Section -->
     <section class="about" id="about">
         <div class="container">
-            <h2>About Doctor-Saab</h2>
-            <p>Doctor-Saab is a comprehensive health assistance platform designed to provide accessible healthcare solutions.</p>
+            <div class="section-header">
+                <span class="section-tag">About DoctorSab</span>
+                <h2>Revolutionizing Healthcare Access</h2>
+                <p>Connecting patients with medical professionals through innovative technology since 2025</p>
+            </div>
+
+            <div class="about-content-new">
+                <!-- Vision and Mission -->
+                <div class="about-cards-container">
+                    <div class="about-card vision">
+                        <div class="card-icon"><i class="fas fa-eye"></i></div>
+                        <h3>Our Vision</h3>
+                        <p>A world where quality healthcare is accessible to everyone, anytime, anywhere – breaking down geographical and economic barriers through technology.</p>
+                    </div>
+
+                    <div class="about-card mission">
+                        <div class="card-icon"><i class="fas fa-bullseye"></i></div>
+                        <h3>Our Mission</h3>
+                        <p>To democratize healthcare by providing instant medical guidance, connecting patients with specialists, and leveraging AI to make preliminary diagnoses accessible globally.</p>
+                    </div>
+
+                    <div class="about-card story">
+                        <div class="card-icon"><i class="fas fa-book-open"></i></div>
+                        <h3>Our Story</h3>
+                        <p>Founded in 2025 by a team of medical professionals and tech innovators, DoctorSab was created to address the growing need for accessible healthcare in a digital-first world.</p>
+                    </div>
+                </div>
+
+                <!-- Our Journey Timeline -->
+                <div class="about-timeline">
+                    <h3>Our Journey</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>November 2024</h4>
+                                <p>Initial idea conceptualized to bridge healthcare accessibility gap with technology</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>January 2025</h4>
+                                <p>Conducted feasibility study and market research to validate the concept</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>March 2025</h4>
+                                <p>Prototype development completed with AI-powered symptom checker</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>May 8, 2025</h4>
+                                <p>Official launch of DoctorSab platform with our first 100 beta users</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Values -->
+                <div class="about-values">
+                    <h3>Our Core Values</h3>
+                    <div class="values-container">
+                        <div class="value-item">
+                            <div class="value-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                            <h4>Patient-Centered Care</h4>
+                            <p>Every decision we make starts with the patient's best interest in mind.</p>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon"><i class="fas fa-lock"></i></div>
+                            <h4>Privacy & Security</h4>
+                            <p>We protect your health information with state-of-the-art encryption and strict protocols.</p>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
+                            <h4>Innovation</h4>
+                            <p>We constantly explore new technologies to improve healthcare delivery and outcomes.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="about-stats-container">
+                    <div class="stat-box animated">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-number" data-count="45">
+                            <div class="stat-suffix">1K+</div>
+                        </div>
+                        
+                        <div class="stat-text">Active Users</div>
+                    </div>
+                    <div class="stat-box animated">
+                        <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+                        <div class="stat-number" data-count="200">
+                            <div class="stat-suffix">5+</div>
+                        </div>
+                        
+                        <div class="stat-text">Medical Experts</div>
+                    </div>
+                    <div class="stat-box animated">
+                        <div class="stat-icon"><i class="fas fa-smile"></i></div>
+                        <div class="stat-number" data-count="98">
+                            <div class="stat-suffix">98%</div>
+                        <div class="stat-text">Satisfaction Rate</div> 
+                     </div>
+                    </div>
+
+                    <div class="stat-box animated">
+                        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+                        <div class="stat-number" data-count="20">
+                            <div class="stat-suffix">1+</div>
+                        </div>
+                        <div class="stat-text">Countries Served</div>
+                    </div>
             
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Doctor with patient">
-                </div>
-                <div class="about-text">
-                    <h3>Healthcare Reimagined</h3>
-                    <p>Doctor-Saab combines cutting-edge technology with healthcare expertise to deliver a seamless experience for users seeking medical advice and assistance.</p>
-                    <p>Our platform uses advanced AI for preliminary symptom analysis, provides detailed first aid instructions, and connects you with certified healthcare professionals via secure video consultations.</p>
-                    
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">5000+</div>
-                            <div class="stat-label">Active Users</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">100+</div>
-                            <div class="stat-label">Medical Experts</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">24/7</div>
-                            <div class="stat-label">Support</div>
-                        </div>
-                    </div>
-                </div>
+             </div>
+        <div class="about-team-section">
+            <h3>Meet Our Leadership</h3>
+            <p>Our team combines expertise in healthcare, technology, and business to drive our mission forward. Led by experienced professionals with backgrounds from leading medical institutions and tech companies, we're passionate about transforming healthcare accessibility.</p>
+            <div class="team-cta">
+                <button class="btn btn-primary" id="meetFullTeamBtn">Meet Our Full Team <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
         <div class="container">
-            <h2>User Testimonials</h2>
-            <div class="testimonial-container">
-                <div class="testimonial-card">
-                    <p class="testimonial-content">Doctor-Saab helped me identify my symptoms quickly and connected me with a specialist. The first aid information was also incredibly useful when my child had a minor accident.</p>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="author-avatar">
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Mother of two</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-content">The video consultation feature saved me a trip to the hospital. I was able to speak with a doctor immediately and get the medication I needed. Highly recommended!</p>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="author-avatar">
-                        <div class="author-info">
-                            <h4>Michael Chen</h4>
-                            <p>Software Developer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-content">As someone living in a rural area, Doctor-Saab has been a game-changer for me. Access to medical professionals without long travel times has been invaluable.</p>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="author-avatar">
-                        <div class="author-info">
-                            <h4>Lisa Patel</h4>
-                            <p>Teacher</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="section-header">
+                <span class="section-tag">Contact Us</span>
+                <h2>Get In Touch</h2>
+                <p>Have questions or feedback? We'd love to hear from you.</p>
             </div>
-        </div>
-    </section>
 
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="auth-options">
-                <div class="auth-tabs">
-                    <button class="tab-btn active" data-tab="login">Login</button>
-                    <button class="tab-btn" data-tab="signup">Sign Up</button>
-                </div>
-                
-                <div id="login" class="tab-content active">
-                    <form id="loginForm">
+            <div class="contact-content">
+                <div class="contact-form">
+                    <form id="contact-form">
                         <div class="form-group">
-                            <label for="loginEmail">Email</label>
-                            <input type="email" id="loginEmail" required>
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" placeholder="Enter your name" required>
                         </div>
                         <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <input type="password" id="loginPassword" required>
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
                         </div>
-                        <button type="submit" class="btn-primary">Login</button>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" placeholder="Enter subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" placeholder="Enter your message" required></textarea>
+                        </div>
+                        <!-- Status messages with improved UI -->
+                        <div class="message-status">
+                            <div class="sending-message" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Sending your message...
+                            </div>
+                            <div class="sent-message" style="display: none;">
+                                <i class="fas fa-check-circle"></i> Your message has been sent successfully!
+                            </div>
+                            <div class="error-message" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> Something went wrong. Please try again.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"></i></button>
                     </form>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    <button id="googleLogin" class="btn-google">
-                        <i class="fab fa-google"></i> Continue with Google
-                    </button>
-                    <button id="phoneLogin" class="btn-phone">
-                        <i class="fas fa-phone"></i> Continue with Phone
-                    </button>
-                </div>
-                
-                <div id="signup" class="tab-content">
-                    <form id="signupForm">
-                        <div class="form-group">
-                            <label for="signupName">Full Name</label>
-                            <input type="text" id="signupName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signupEmail">Email</label>
-                            <input type="email" id="signupEmail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signupPassword">Password</label>
-                            <input type="password" id="signupPassword" required>
-                        </div>
-                        <button type="submit" class="btn-primary">Sign Up</button>
-                    </form>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    <button id="googleSignup" class="btn-google">
-                        <i class="fab fa-google"></i> Sign up with Google
-                    </button>
-                    <button id="phoneSignup" class="btn-phone">
-                        <i class="fas fa-phone"></i> Sign up with Phone
-                    </button>
-                </div>
-                
-                <!-- Phone Verification Container -->
-                <div id="phoneVerificationContainer" class="tab-content">
-                    <div class="back-button">
-                        <button id="backToAuth" class="btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                    </div>
-                    
-                    <!-- Phone Number Form -->
-                    <form id="phoneForm" class="phone-verify-step">
-                        <h3>Enter Your Phone Number</h3>
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number (with country code)</label>
-                            <input type="tel" id="phoneNumber" placeholder="+1 2345678900" required>
-                        </div>
-                        <div id="recaptcha-container"></div>
-                        <button type="submit" class="btn-primary">Send Verification Code</button>
-                    </form>
-                    
-                    <!-- Verification Code Form -->
-                    <form id="verifyCodeForm" class="phone-verify-step">
-                        <h3>Verify Your Phone Number</h3>
-                        <div class="form-group">
-                            <label for="verificationCode">Enter 6-digit Code</label>
-                            <input type="text" id="verificationCode" placeholder="123456" maxlength="6" required>
-                        </div>
-                        <button type="submit" class="btn-primary">Verify Code</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="cta-content">
-            <h2 class="cta-title">Ready to Take Control of Your Health?</h2>
-            <p class="cta-text">Join thousands of users who trust Doctor Sab for reliable health information and guidance.</p>
-            <div class="cta-buttons">
-                <a href="dashboard.html" class="btn-primary"><i class="fas fa-stethoscope"></i> Get Started Now</a>
-                <a href="#contact" class="btn-secondary"><i class="fas fa-envelope"></i> Contact Us</a>
+
+
+                    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+                    <script>
+                      (function() {
+                        emailjs.init("C-c_ieBFgoEKweILO");
+                      })();
+                  
+                      document.getElementById("contact-form").addEventListener("submit", function(event) {
+                        event.preventDefault();
+                        const userEmail = document.getElementById("email").value;
+                        const userMessage = document.getElementById("message").value;
+                        const fullMessage = `From: ${userEmail}\n\n${userMessage}`;
+                        const formData = {
+                          name: document.getElementById("name").value,
+                          email: userEmail,
+                          subject: document.getElementById("subject").value,
+                          message: fullMessage
+                        };
+                  
+                        emailjs.send("service_wje2o1f", "template_oa0ipsl", formData)
+                          .then(function(response) {
+                            console.log("SUCCESS!", response.status, response.text);
+                            document.querySelector(".sent-message").style.display = "block";
+                            document.getElementById("contact-form").reset();
+                          }, function(error) {
+                            console.log("FAILED...", error);
+                            document.querySelector(".error-message").style.display = "block";
+                          });
+                      });
+                    </script>
+                    
+                </div>
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4>Our Location</h4>
+                            <p>Putalisadak, Kathmandu, Nepal</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <h4>Phone Number</h4>
+                            <p>+977 9876543210</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email Address</h4>
+                            <p>doc.tor.sab.web@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Doctor-Saab</h3>
-                <p>Your personal health assistance application designed to provide accessible healthcare solutions.</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <!-- Top Footer Area -->
+            <div class="footer-content">
+                <!-- Company Info -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <h2>Doctor<span>Sab</span></h2>
+                    </div>
+                    <p class="footer-desc">Your trusted health assistant providing instant medical guidance and connecting you with healthcare professionals anytime, anywhere.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Footer Navigation -->
+                <div class="footer-nav-wrapper">
+                    <div class="footer-nav-column">
+                        <h3>Navigation</h3>
+                        <ul class="footer-nav">
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-nav-column">
+                        <h3>Services</h3>
+                        <ul class="footer-nav">
+                            <li><a href="#">Symptom Checker</a></li>
+                            <li><a href="#">First Aid Guide</a></li>
+                            <li><a href="#">Doctor Consultation</a></li>
+                            <li><a href="#">Health Records</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-nav-column">
+                        <h3>Contact</h3>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Putalisadak, Kathmandu, Nepal</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone-alt"></i>
+                                <span>+977 9876543210</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>doc.tor.sab.web@gmail.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Download App Section -->
+                <div class="footer-download">
+                    <h3>Get the App</h3>
+                    <p>Download our mobile app for a better experience</p>
+                    <div class="app-buttons">
+                        <a href="#" class="app-btn">
+                            <i class="fab fa-apple"></i>
+                            <div class="app-btn-text">
+                                <span class="small-text">Download on the</span>
+                                <span class="big-text">App Store</span>
+                            </div>
+                        </a>
+                        <a href="#" class="app-btn">
+                            <i class="fab fa-google-play"></i>
+                            <div class="app-btn-text">
+                                <span class="small-text">Get it on</span>
+                                <span class="big-text">Google Play</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 DoctorSab. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookies Policy</a>
+                </div>
             </div>
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-envelope"></i> support@doctor-saab.com</p>
-                <p><i class="fas fa-phone"></i> +1 234 567 8901</p>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Health Street, Medical District</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Doctor-Saab. All rights reserved.</p>
         </div>
     </footer>
-    
-    <!-- Custom Cursor Elements -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-    
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="cursor.js"></script>
+
+    <!-- Login/Signup Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="auth-forms">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-form="login">Login</button>
+                    <button class="auth-tab" data-form="signup">Sign Up</button>
+                </div>
+                <form id="loginForm" class="auth-form active">
+                    <h3>Welcome Back</h3>
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <div class="auth-message" id="loginMessage"></div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="social-login">
+                        <p>Or login with</p>
+                        <div class="social-buttons">
+                            <button type="button" class="social-btn google" id="googleLogin">
+                                <i class="fab fa-google"></i> Google
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="signupForm" class="auth-form">
+                    <h3>Create Account</h3>
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>I am a:</label>
+                        <div class="role-selection">
+                            <div class="role-option">
+                                <input type="radio" id="rolePatient" name="userRole" value="patient" checked>
+                                <label for="rolePatient">
+                                    <i class="fas fa-user"></i>
+                                    <span>Patient</span>
+                                </label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" id="roleDoctor" name="userRole" value="doctor">
+                                <label for="roleDoctor">
+                                    <i class="fas fa-user-md"></i>
+                                    <span>Doctor</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doctor-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="specialization">Specialization</label>
+                            <input type="text" id="specialization" placeholder="e.g., Cardiology, Pediatrics">
+                        </div>
+                        <div class="form-group">
+                            <label for="licenseNumber">Medical License Number</label>
+                            <input type="text" id="licenseNumber" placeholder="Enter your license number">
+                        </div>
+                    </div>
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="termsAgreement" required>
+                        <label for="termsAgreement">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+                    <div class="auth-message" id="signupMessage"></div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <div class="social-login">
+                        <p>Or sign up with</p>
+                        <div class="social-buttons">
+                            <button type="button" class="social-btn google" id="googleSignup">
+                                <i class="fab fa-google"></i> Google
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript -->
     <script type="module" src="main.js"></script>
+    <script src="cursor.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Initialize Firebase with your auth hooks and event listeners
+        import { auth } from './firebase-auth.js';
+        
+        console.log("Firebase initialization script loaded");
+        
+        // Add global event listeners for login/signup buttons after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded, attaching event listeners");
+            
+            // Login button
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    console.log("Login button clicked");
+                    document.getElementById('authModal').style.display = 'block';
+                    
+                    // Switch to login tab
+                    document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+                    document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                    document.querySelector('.auth-tab[data-form="login"]').classList.add('active');
+                    document.getElementById('loginForm').classList.add('active');
+                });
+            }
+            
+            // Signup button
+            const signupBtn = document.getElementById('signupBtn');
+            if (signupBtn) {
+                signupBtn.addEventListener('click', function() {
+                    console.log("Signup button clicked");
+                    document.getElementById('authModal').style.display = 'block';
+                    
+                    // Switch to signup tab
+                    document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+                    document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                    document.querySelector('.auth-tab[data-form="signup"]').classList.add('active');
+                    document.getElementById('signupForm').classList.add('active');
+                });
+            }
+            
+            // Close modal
+            const closeBtn = document.querySelector('.close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    document.getElementById('authModal').style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

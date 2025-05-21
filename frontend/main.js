@@ -1,60 +1,90 @@
-// Import Firebase authentication
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+// Import Firebase authentication components from our firebase-auth.js module
+import { 
+  auth, 
+  signInWithEmail, 
+  signUpWithEmail, 
+  signInWithGoogle, 
+  getUserData 
+} from "./firebase-auth.js";
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA35mvixmpvziRmtHY5g14u-RWDgK0FUFw",
-  authDomain: "doc-tor-sab.firebaseapp.com",
-  projectId: "doc-tor-sab",
-  storageBucket: "doc-tor-sab.firebasestorage.app",
-  messagingSenderId: "740063020505",
-  appId: "1:740063020505:web:bd949c8abbf3b52c2905c8",
-  measurementId: "G-S1PTGJQETL"
-};
+// Initialize EmailJS
+(function() {
+  emailjs.init("C-c_ieBFgoEKweILO");
+})();
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const googleProvider = new GoogleAuthProvider();
-
-// DOM Elements
-const loginBtn = document.getElementById('loginBtn');
-const getStartedBtn = document.getElementById('getStartedBtn');
-const authModal = document.getElementById('authModal');
-const closeBtn = document.querySelector('.close');
-const tabBtns = document.querySelectorAll('.tab-btn');
-const tabContents = document.querySelectorAll('.tab-content');
-const loginForm = document.getElementById('loginForm');
-const signupForm = document.getElementById('signupForm');
-const googleLoginBtn = document.getElementById('googleLogin');
-const googleSignupBtn = document.getElementById('googleSignup');
-const phoneLoginBtn = document.getElementById('phoneLogin');
-const phoneSignupBtn = document.getElementById('phoneSignup');
-const phoneVerificationContainer = document.getElementById('phoneVerificationContainer');
-const phoneForm = document.getElementById('phoneForm');
-const verifyCodeForm = document.getElementById('verifyCodeForm');
+// DOM Elements - initialize later to ensure DOM is loaded
+let loginBtn;
+let signupBtn;
+let getStartedBtn;
+let authModal;
+let closeBtn;
+let authTabs;
+let authForms;
+let loginForm;
+let signupForm;
+let googleLoginBtn;
+let googleSignupBtn;
+let roleDoctor;
+let rolePatient;
+let doctorFields;
+let loginMessage;
+let signupMessage;
+let passwordStrength;
 
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize DOM elements
+  loginBtn = document.getElementById('loginBtn');
+  signupBtn = document.getElementById('signupBtn');
+  getStartedBtn = document.getElementById('getStartedBtn');
+  authModal = document.getElementById('authModal');
+  closeBtn = document.querySelector('.close-btn');
+  authTabs = document.querySelectorAll('.auth-tab');
+  authForms = document.querySelectorAll('.auth-form');
+  loginForm = document.getElementById('loginForm');
+  signupForm = document.getElementById('signupForm');
+  googleLoginBtn = document.getElementById('googleLogin');
+  googleSignupBtn = document.getElementById('googleSignup');
+  roleDoctor = document.getElementById('roleDoctor');
+  rolePatient = document.getElementById('rolePatient');
+  doctorFields = document.querySelector('.doctor-fields');
+  loginMessage = document.getElementById('loginMessage');
+  signupMessage = document.getElementById('signupMessage');
+  passwordStrength = document.getElementById('passwordStrength');
+
+  console.log("DOM elements initialized:", { 
+    loginBtn, signupBtn, authModal, loginForm, signupForm 
+  });
+  
   // Initialize other features
   initScrollReveal();
   initSmoothScroll();
   initCustomCursor();
   
   // Add event listeners for authentication
-  loginBtn?.addEventListener('click', openAuthModal);
-  getStartedBtn?.addEventListener('click', openAuthModal);
-  closeBtn?.addEventListener('click', closeAuthModal);
-  tabBtns.forEach(btn => btn.addEventListener('click', switchTab));
-  loginForm?.addEventListener('submit', handleLogin);
-  signupForm?.addEventListener('submit', handleSignup);
-  googleLoginBtn?.addEventListener('click', signInWithGoogle);
-  googleSignupBtn?.addEventListener('click', signInWithGoogle);
-  phoneLoginBtn?.addEventListener('click', showPhoneAuth);
-  phoneSignupBtn?.addEventListener('click', showPhoneAuth);
-  phoneForm?.addEventListener('submit', handlePhoneAuth);
-  verifyCodeForm?.addEventListener('submit', verifyPhoneAuthCode);
+  if (loginBtn) loginBtn.addEventListener('click', () => openAuthModal('login'));
+  if (signupBtn) signupBtn.addEventListener('click', () => openAuthModal('signup'));
+  if (getStartedBtn) getStartedBtn.addEventListener('click', () => openAuthModal('signup'));
+  if (closeBtn) closeBtn.addEventListener('click', closeAuthModal);
+  
+  authTabs.forEach(tab => {
+    tab.addEventListener('click', switchTab);
+  });
+  
+  if (loginForm) loginForm.addEventListener('submit', handleLogin);
+  if (signupForm) signupForm.addEventListener('submit', handleSignup);
+  
+  // Google authentication
+  if (googleLoginBtn) googleLoginBtn.addEventListener('click', () => handleGoogleAuth('login'));
+  if (googleSignupBtn) googleSignupBtn.addEventListener('click', () => handleGoogleAuth('signup'));
+  
+  // Role selection toggle for doctor-specific fields
+  if (roleDoctor) roleDoctor.addEventListener('change', toggleDoctorFields);
+  if (rolePatient) rolePatient.addEventListener('change', toggleDoctorFields);
+  
+  // Password strength meter
+  const passwordInput = document.getElementById('signupPassword');
+  if (passwordInput) passwordInput.addEventListener('input', updatePasswordStrength);
   
   // Close modal when clicking outside
   window.onclick = function(e) {
@@ -63,15 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
   
-  // Fix for stat element HTML issue
-  const statElements = document.querySelectorAll('.stat-number');
-  if (statElements.length > 0) {
-    // Check for the broken element and fix it
-    const brokenElement = document.querySelector('.stat-number + div.stat-label');
-    if (brokenElement && brokenElement.previousElementSibling.textContent.includes('100+')) {
-      brokenElement.previousElementSibling.innerHTML = '100+';
-    }
-  }
+  console.log("All event listeners attached");
 });
 
 function initCustomCursor() {
@@ -140,6 +162,19 @@ function initCustomCursor() {
   });
 }
 
+// Debounce function to limit how often a function is called
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 // Scroll reveal animation
 function initScrollReveal() {
   const revealElements = document.querySelectorAll('.hero-content, .card, .about-content, .testimonial-card');
@@ -176,82 +211,137 @@ function initScrollReveal() {
   `);
 }
 
-// Open authentication modal
-function openAuthModal() {
-  authModal.classList.add('active');
+// Auth Modal Functions
+function openAuthModal(tab = 'login') {
+  authModal.style.display = 'block';
+  // Activate the correct tab
+  authTabs.forEach(t => t.classList.remove('active'));
+  authForms.forEach(f => f.classList.remove('active'));
+  
+  const activeTab = Array.from(authTabs).find(t => t.dataset.form === tab);
+  const activeForm = document.getElementById(`${tab}Form`);
+  
+  if (activeTab) activeTab.classList.add('active');
+  if (activeForm) activeForm.classList.add('active');
+  
+  // Clear any previous messages
+  loginMessage.textContent = '';
+  signupMessage.textContent = '';
 }
 
-// Close authentication modal
 function closeAuthModal() {
-  authModal.classList.remove('active');
+  authModal.style.display = 'none';
+  // Reset forms
+  loginForm.reset();
+  signupForm.reset();
+  // Hide error messages
+  loginMessage.textContent = '';
+  signupMessage.textContent = '';
 }
 
-// Switch between tabs
-function switchTab(e) {
-  const tabId = e.target.dataset.tab;
+function switchTab(event) {
+  const tab = event.target.dataset.form;
   
-  // Remove active class from all tabs
-  tabBtns.forEach(btn => btn.classList.remove('active'));
-  tabContents.forEach(content => content.classList.remove('active'));
+  // Switch active tab styling
+  authTabs.forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
   
-  // Add active class to selected tab
-  e.target.classList.add('active');
-  document.getElementById(tabId).classList.add('active');
+  // Switch visible form
+  authForms.forEach(f => f.classList.remove('active'));
+  document.getElementById(`${tab}Form`).classList.add('active');
+  
+  // Clear messages
+  loginMessage.textContent = '';
+  signupMessage.textContent = '';
 }
 
 // Email login
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
   
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
   
-  // Show loading indicator on button
-  const submitBtn = loginForm.querySelector('button[type="submit"]');
-  const originalText = submitBtn.textContent;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-  submitBtn.disabled = true;
-  
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      // Show error message with animation
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-      
-      showErrorMessage(loginForm, error.message);
-    });
+  try {
+    loginMessage.textContent = 'Logging in...';
+    loginMessage.style.color = '#007bff';
+    
+    // Sign in with email/password
+    const userCredential = await signInWithEmail(email, password);
+    
+    // Get user data including role
+    const userData = await getUserData(userCredential.user.uid);
+    
+    // Store user data in session storage
+    sessionStorage.setItem('currentUser', JSON.stringify(userData));
+    
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+  } catch (error) {
+    console.error('Login error:', error);
+    loginMessage.textContent = getAuthErrorMessage(error);
+    loginMessage.style.color = '#dc3545';
+  }
 }
 
 // Email signup
-function handleSignup(e) {
+async function handleSignup(e) {
   e.preventDefault();
   
-  const name = document.getElementById('signupName').value;
+  const fullName = document.getElementById('signupName').value;
   const email = document.getElementById('signupEmail').value;
   const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('signupConfirmPassword').value;
+  const userRole = document.querySelector('input[name="userRole"]:checked').value;
+  const termsAgreed = document.getElementById('termsAgreement').checked;
   
-  // Show loading indicator on button
-  const submitBtn = signupForm.querySelector('button[type="submit"]');
-  const originalText = submitBtn.textContent;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-  submitBtn.disabled = true;
+  // Basic validation
+  if (password !== confirmPassword) {
+    signupMessage.textContent = 'Passwords do not match';
+    signupMessage.style.color = '#dc3545';
+    return;
+  }
   
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Account created
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      // Show error message with animation
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-      
-      showErrorMessage(signupForm, error.message);
-    });
+  if (!termsAgreed) {
+    signupMessage.textContent = 'You must agree to the Terms of Service and Privacy Policy';
+    signupMessage.style.color = '#dc3545';
+    return;
+  }
+  
+  // Collect additional doctor fields if applicable
+  const doctorData = {};
+  if (userRole === 'doctor') {
+    doctorData.specialization = document.getElementById('specialization').value;
+    doctorData.licenseNumber = document.getElementById('licenseNumber').value;
+    
+    // Validate doctor fields
+    if (!doctorData.specialization || !doctorData.licenseNumber) {
+      signupMessage.textContent = 'Please fill out all doctor-specific fields';
+      signupMessage.style.color = '#dc3545';
+      return;
+    }
+  }
+  
+  try {
+    signupMessage.textContent = 'Creating your account...';
+    signupMessage.style.color = '#007bff';
+    
+    // Create user with email/password and save role to Firestore
+    const userData = await signUpWithEmail(email, password, fullName, userRole);
+    
+    // Store user data in session storage with role
+    sessionStorage.setItem('currentUser', JSON.stringify({
+      ...userData,
+      ...doctorData
+    }));
+    
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+  } catch (error) {
+    console.error('Signup error:', error);
+    signupMessage.textContent = getAuthErrorMessage(error);
+    signupMessage.style.color = '#dc3545';
+  }
 }
 
 // Show error message
@@ -289,119 +379,98 @@ function showErrorMessage(form, message) {
 }
 
 // Google authentication
-function signInWithGoogle() {
-  signInWithPopup(auth, googleProvider)
-    .then((result) => {
-      // Google sign in successful
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      alert(`Google login error: ${error.message}`);
-    });
-}
-
-// Show phone authentication UI
-function showPhoneAuth() {
-  // Hide login and signup forms
-  document.getElementById('login').classList.remove('active');
-  document.getElementById('signup').classList.remove('active');
+async function handleGoogleAuth(action) {
+  // For signup with Google, check the selected role
+  let userRole = 'patient'; // Default
   
-  // Show phone authentication container
-  phoneVerificationContainer.classList.add('active');
-  
-  // Ensure the tab buttons are updated to reflect the active tab
-  tabBtns.forEach(btn => btn.classList.remove('active'));
-  // We don't have a dedicated tab for phone, so we'll keep this UI separate
-}
-
-// Handle phone authentication request
-function handlePhoneAuth(e) {
-  e.preventDefault();
-  
-  const phoneNumber = document.getElementById('phoneNumber').value;
-  const submitBtn = phoneForm.querySelector('button[type="submit"]');
-  const originalText = submitBtn.textContent;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending code...';
-  submitBtn.disabled = true;
-  
-  // Initialize reCAPTCHA verifier if not already initialized
-  if (!window.recaptchaVerifier) {
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      'size': 'normal',
-      'callback': (response) => {
-        // reCAPTCHA solved, allow phone auth
-        phoneForm.querySelector('button[type="submit"]').disabled = false;
-      },
-      'expired-callback': () => {
-        // Reset reCAPTCHA
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-        alert('reCAPTCHA has expired. Please solve it again.');
-      }
-    });
+  if (action === 'signup') {
+    userRole = document.querySelector('input[name="userRole"]:checked')?.value || 'patient';
   }
   
-  // Format phone number to E.164 format if not already formatted
-  let formattedPhoneNumber = phoneNumber;
-  if (!phoneNumber.startsWith('+')) {
-    formattedPhoneNumber = `+${phoneNumber}`;
+  try {
+    const messageEl = action === 'login' ? loginMessage : signupMessage;
+    messageEl.textContent = 'Authenticating with Google...';
+    messageEl.style.color = '#007bff';
+    
+    // Sign in with Google, passing the user role for signup
+    const userData = await signInWithGoogle(userRole);
+    
+    // Store user data in session storage
+    sessionStorage.setItem('currentUser', JSON.stringify(userData));
+    
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+  } catch (error) {
+    console.error('Google auth error:', error);
+    const messageEl = action === 'login' ? loginMessage : signupMessage;
+    messageEl.textContent = getAuthErrorMessage(error);
+    messageEl.style.color = '#dc3545';
   }
-  
-  // Send verification code
-  signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier)
-    .then((confirmationResult) => {
-      // SMS sent. Save confirmation result to verify code later
-      window.confirmationResult = confirmationResult;
-      
-      // Show verification code input form
-      phoneForm.style.display = 'none';
-      verifyCodeForm.style.display = 'block';
-      
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-    })
-    .catch((error) => {
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-      
-      showErrorMessage(phoneForm, error.message);
-      
-      // Reset reCAPTCHA on error
-      if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-      }
-    });
 }
 
-// Verify the SMS code and complete authentication
-function verifyPhoneAuthCode(e) {
-  e.preventDefault();
+// Helper Functions
+function toggleDoctorFields() {
+  if (roleDoctor?.checked) {
+    doctorFields.style.display = 'block';
+  } else {
+    doctorFields.style.display = 'none';
+  }
+}
+
+function updatePasswordStrength(e) {
+  const password = e.target.value;
   
-  const verificationCode = document.getElementById('verificationCode').value;
-  const submitBtn = verifyCodeForm.querySelector('button[type="submit"]');
-  const originalText = submitBtn.textContent;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
-  submitBtn.disabled = true;
+  // Simple password strength calculation
+  let strength = 0;
+  if (password.length >= 8) strength += 1;
+  if (password.match(/[A-Z]/)) strength += 1;
+  if (password.match(/[a-z]/)) strength += 1;
+  if (password.match(/[0-9]/)) strength += 1;
+  if (password.match(/[^A-Za-z0-9]/)) strength += 1;
   
-  if (!window.confirmationResult) {
-    showErrorMessage(verifyCodeForm, 'Verification session expired. Please try again.');
-    submitBtn.innerHTML = originalText;
-    submitBtn.disabled = false;
-    return;
+  // Update UI
+  let strengthText = '';
+  let color = '';
+  
+  switch(strength) {
+    case 0:
+    case 1:
+      strengthText = 'Weak';
+      color = '#dc3545';
+      break;
+    case 2:
+    case 3:
+      strengthText = 'Medium';
+      color = '#ffc107';
+      break;
+    case 4:
+    case 5:
+      strengthText = 'Strong';
+      color = '#28a745';
+      break;
   }
   
-  window.confirmationResult.confirm(verificationCode)
-    .then((result) => {
-      // User signed in successfully
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-      
-      showErrorMessage(verifyCodeForm, error.message);
-    });
+  passwordStrength.textContent = password ? strengthText : '';
+  passwordStrength.style.color = color;
+}
+
+function getAuthErrorMessage(error) {
+  switch(error.code) {
+    case 'auth/wrong-password':
+      return 'Incorrect password';
+    case 'auth/user-not-found':
+      return 'No account found with this email';
+    case 'auth/email-already-in-use':
+      return 'Email already in use';
+    case 'auth/weak-password':
+      return 'Password is too weak';
+    case 'auth/invalid-email':
+      return 'Invalid email format';
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Try again later';
+    default:
+      return 'An error occurred. Please try again';
+  }
 }
 
 // Smooth scrolling for navigation links
@@ -432,3 +501,4 @@ auth.onAuthStateChanged((user) => {
     window.location.href = "dashboard.html";
   }
 });
+
